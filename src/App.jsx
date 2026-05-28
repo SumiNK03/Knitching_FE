@@ -1,0 +1,45 @@
+import { useState } from 'react'
+import { Routes, Route } from 'react-router-dom'
+import Header from './components/Header.jsx'
+import SideBar from './components/SideBar.jsx'
+import ExplorePage from './Pages/ExplorePage.jsx'
+import LearningCoursesPage from './Pages/LearningCoursesPage.jsx'
+import MyAccountPage from './Pages/MyAccountPage.jsx'
+import KnittingPatternsPage from './Pages/KnittingPatternsPage.jsx'
+import CrochetPatternsPage from './Pages/CrochetPatternsPage.jsx'
+import SettingsPage from './Pages/SettingsPage.jsx'
+import Login from './Pages/Login.jsx'
+import SignUp from './Pages/SignUp.jsx'
+import SearchPage from './Pages/SearchPage.jsx'
+
+
+function App() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#EDE8DF' }}>
+      <SideBar />
+      
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', borderLeft: '1px solid #EDE8DF' }}>
+        <Header />
+        
+        <main style={{ flex: 1, overflowY: 'auto' }}>
+          <Routes>
+            <Route path="/" element={<ExplorePage />} />
+            <Route path="/explore" element={<ExplorePage />} />
+            <Route path="/learning-course" element={<LearningCoursesPage />} />
+            <Route path="/my-account" element={<MyAccountPage />} />
+            <Route path="/knitting-patterns" element={<KnittingPatternsPage />} />
+            <Route path="/crochet-patterns" element={<CrochetPatternsPage />} />
+            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/search" element={<SearchPage />} />
+          </Routes>
+        </main>
+      </div>
+    </div>
+  )
+}
+
+export default App

@@ -1,0 +1,167 @@
+@import "tailwindcss";
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+
+* {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+}
+
+body {
+  background-color: #EDE8DF;
+}
+
+/* SideBar Styles */
+.sidebar {
+  width: 240px;
+  background-color: #FFFFFF;
+  border-right: 1px solid #EDE8DF;
+}
+
+.sidebar-logo {
+  font-size: 24px;
+  font-weight: 800;
+  color: #4A3E3D;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sidebar-nav a {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 18px 24px;
+  color: #B1B1B1;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  border-radius: 12px;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.sidebar-nav a img {
+  filter: grayscale(100%) brightness(0.9);
+}
+
+.sidebar-nav a:hover {
+  color: #4A3E3D;
+  background-color: #EDE8DF;
+}
+
+.sidebar-nav a:hover img {
+  filter: grayscale(0%) brightness(1);
+}
+
+.sidebar-nav a.active {
+  background-color: transparent;
+  color: #4A3E3D;
+  font-weight: 600;
+  border-radius: 12px 0 0 12px;
+}
+
+.sidebar-nav a.active img {
+  filter: grayscale(0%) brightness(0.7);
+}
+
+.sidebar-nav a.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: #4A3E3D;
+  border-radius: 0 4px 4px 0;
+}
+
+.sidebar-nav img {
+  width: 20px;
+  height: 20px;
+}
+
+/* Header Styles */
+.header {
+  height: 80px;
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #EDE8DF;
+  padding: 0 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.search-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 20px;
+  background-color: #F2EFE9;
+  width: 350px;
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  background-color: transparent;
+  font-size: 14px;
+  outline: none;
+  color: #4A3E3D;
+}
+
+.search-input::placeholder {
+  color: #7A7265;
+}
+
+.login-btn {
+  padding: 8px 24px;
+  color: #4A3E3D;
+  background-color: #F2EFE9;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  border-radius: 20px;
+  transition: all 0.2s;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: #EDE8DF;
+  color: #4A3E3D;
+}
+
+.account-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+}
+
+.account-text {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4A3E3D;
+}
+
+
+
+
