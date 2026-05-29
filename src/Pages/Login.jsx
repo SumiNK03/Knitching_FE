@@ -102,7 +102,7 @@ function Login(props) {
                             onClick={() => navigate('/signup')}
                             className="text-[#D18063] font-semibold cursor-pointer hover:underline border-none bg-none"
                         >
-                            회원가입
+                            로그인
                         </button>
                     </p>
                 </div>
