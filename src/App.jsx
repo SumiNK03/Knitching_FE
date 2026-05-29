@@ -17,13 +17,13 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#EDE8DF' }}>
+    <div style={{ display: 'flex', height: '100vh', backgroundColor: '#F9F6F0', overflow: 'hidden' }}>
       <SideBar />
       
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', borderLeft: '1px solid #EDE8DF' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100vh' }}>
         <Header />
         
-        <main style={{ flex: 1, overflowY: 'auto' }}>
+        <main style={{ flex: 1, overflowY: 'auto', borderTop: '1px solid #EDE8DF', borderLeft: '1px solid #EDE8DF' }}>
           <Routes>
             <Route path="/" element={<ExplorePage />} />
             <Route path="/explore" element={<ExplorePage />} />

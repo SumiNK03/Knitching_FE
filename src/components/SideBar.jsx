@@ -11,6 +11,8 @@ import crochetIcon from '../images/도안코바늘.svg';
 import crochetIconGray from '../images/도안코바늘_그레이.svg';
 import settingsIcon from '../images/설정.svg';
 import settingsIconGray from '../images/설정_그레이.svg';
+import accountIcon from '../images/내 계정.svg';
+import accountIconGray from '../images/내 계정_그레이.svg';
 
 function SideBar() {
   const location = useLocation();
@@ -18,8 +20,9 @@ function SideBar() {
   const menuItems = [
     { path: '/explore', label: '둘러보기', icon: exploreIcon, iconGray: exploreIconGray },
     { path: '/learning-course', label: '학습 중인 과정', icon: courseIcon, iconGray: courseIconGray },
-    { path: '/knitting-patterns', label: '도안-대바늘', icon: knittingIcon, iconGray: knittingIconGray },
-    { path: '/crochet-patterns', label: '도안-코바늘', icon: crochetIcon, iconGray: crochetIconGray },
+    { path: '/knitting-patterns', label: '도안 - 대바늘', icon: knittingIcon, iconGray: knittingIconGray },
+    { path: '/crochet-patterns', label: '도안 - 코바늘', icon: crochetIcon, iconGray: crochetIconGray },
+    { path: '/my-account', label: '내 계정', icon: accountIcon, iconGray: accountIconGray },
     { path: '/settings', label: '설정', icon: settingsIcon, iconGray: settingsIconGray },
   ];
 

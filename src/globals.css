@@ -6,14 +6,41 @@
 }
 
 body {
-  background-color: #EDE8DF;
+  background-color: #F9F6F0;
+  overflow-y: scroll;
+  scrollbar-color: #D18063 #F9F6F0;
+}
+
+/* 웹킷 기반 브라우저 스크롤바 (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 16px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F9F6F0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D18063;
+  border-radius: 6px;
+  border: 3px solid #F9F6F0;
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #C07053;
+}
+
+/* 스크롤바 화살표 버튼 제거 */
+::-webkit-scrollbar-button {
+  display: none;
 }
 
 /* SideBar Styles */
 .sidebar {
   width: 240px;
   background-color: #FFFFFF;
-  border-right: 1px solid #EDE8DF;
+  /* border-right: 1px solid #EDE8DF; */
 }
 
 .sidebar-logo {
@@ -87,7 +114,8 @@ body {
 .header {
   height: 80px;
   background-color: #FFFFFF;
-  border-bottom: 1px solid #EDE8DF;
+  /* border-bottom: 1px solid #EDE8DF; */
+  /* border-left: 1px solid #FFFFFF; */
   padding: 0 40px;
   display: flex;
   justify-content: space-between;
