@@ -149,7 +149,7 @@ function PatternDetailPage() {
                                 onClick={handleEnroll}
                                 className="w-full py-4 rounded-[15px] font-bold text-lg text-white bg-[#D18063] hover:bg-[#C67053] transition-all"
                             >
-                                수강신청하기
+                                수강신청
                             </button>
                         </div>
 
