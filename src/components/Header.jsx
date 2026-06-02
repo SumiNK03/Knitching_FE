@@ -12,14 +12,26 @@ function Header() {
 
   // 경로별 제목 매핑
   const getTitleByPath = (pathname) => {
+    // 동적 경로 처리
+    if (pathname.startsWith('/course/')) {
+      return '도안 학습 상세';
+    }
+    if (pathname.startsWith('/curriculum/')) {
+      return '동영상 학습하기';
+    }
+    if (pathname.startsWith('/pattern/')) {
+      return '패턴 상세';
+    }
+
     const titleMap = {
       '/': '둘러보기',
       '/explore': '둘러보기',
       '/learning-course': '학습 중인 과정',
+      '/payment': '결제',
       '/my-account': '내 계정',
       '/knitting-patterns': '도안 - 대바늘',
       '/crochet-patterns': '도안 - 코바늘',
-      '/settings': '설정',
+      '/settings': '내 숙련도 설정',
       '/login': '로그인',
       '/signup': '회원가입',
       '/search': '검색',

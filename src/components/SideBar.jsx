@@ -23,7 +23,7 @@ function SideBar() {
     { path: '/knitting-patterns', label: '도안 - 대바늘', icon: knittingIcon, iconGray: knittingIconGray },
     { path: '/crochet-patterns', label: '도안 - 코바늘', icon: crochetIcon, iconGray: crochetIconGray },
     { path: '/my-account', label: '내 계정', icon: accountIcon, iconGray: accountIconGray },
-    { path: '/settings', label: '설정', icon: settingsIcon, iconGray: settingsIconGray },
+    { path: '/settings', label: '내 숙련도 설정', icon: settingsIcon, iconGray: settingsIconGray },
   ];
 
   const isActive = (path) => {

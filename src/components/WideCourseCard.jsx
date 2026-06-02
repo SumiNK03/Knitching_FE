@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function WideCourseCard({ 
+    courseId,
     title, 
     author,
     tool,
@@ -13,7 +14,17 @@ function WideCourseCard({
     const navigate = useNavigate();
 
     const handleCardClick = () => {
-        navigate(path);
+        // 도안 학습 상세 페이지로 이동
+        navigate(`/course/${courseId}`, {
+            state: {
+                course: { title, author, tool, image, progress, curriculum }
+            }
+        });
+    };
+
+    const handleCurriculumClick = (e, curriculumItem) => {
+        e.stopPropagation();
+        // 커리큘럼 항목은 더 이상 클릭하지 않음 (상세 페이지에서만 가능)
     };
 
     // 커리큘럼 수강 상태별 분류
@@ -73,7 +84,10 @@ function WideCourseCard({
                     {/* 커리큘럼 항목들 */}
                     <div className="space-y-2.5">
                         {curriculum.map((item, index) => (
-                            <div key={index} className="flex gap-8 text-xs">
+                            <div 
+                                key={item.id || index} 
+                                className="flex gap-8 text-xs p-1 rounded"
+                            >
                                 <span className="w-6 font-normal text-[#232323]">
                                     {String(index + 1).padStart(2, '0')}
                                 </span>

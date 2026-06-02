@@ -15,11 +15,11 @@ function LearningCoursesPage() {
             image: pattern1,
             progress: 65,
             curriculum: [
-                { title: '기본 도구 알아보기', completed: true },
-                { title: '사슬뜨기 배우기', completed: true },
-                { title: '짧은뜨기 기초', completed: false },
-                { title: '긴뜨기 마스터하기', completed: false },
-                { title: '색상 변경 기법', completed: false },
+                { id: 1, title: '기본 도구 알아보기', completed: true, youtubeId: 'dQw4w9WgXcQ' },
+                { id: 2, title: '사슬뜨기 배우기', completed: true, youtubeId: 'jNQXAC9IVRw' },
+                { id: 3, title: '짧은뜨기 기초', completed: false, youtubeId: '9bZkp7q19f0' },
+                { id: 4, title: '긴뜨기 마스터하기', completed: false, youtubeId: 'eqKMx3_nWcE' },
+                { id: 5, title: '색상 변경 기법', completed: false, youtubeId: 'jIlQ_XpvQds' },
             ],
             path: '/'
         },
@@ -31,10 +31,10 @@ function LearningCoursesPage() {
             image: pattern5,
             progress: 42,
             curriculum: [
-                { title: '복합 패턴 이해하기', completed: true },
-                { title: '에임 작업법 배우기', completed: false },
-                { title: '텍스처 기법 마스터', completed: false },
-                { title: '옷 만들기 프로젝트', completed: false },
+                { id: 1, title: '복합 패턴 이해하기', completed: true, youtubeId: 'MgPT0Kz8A88' },
+                { id: 2, title: '에임 작업법 배우기', completed: false, youtubeId: '2Xc3p0CNTXc' },
+                { id: 3, title: '텍스처 기법 마스터', completed: false, youtubeId: 'aJOTlE1K90k' },
+                { id: 4, title: '옷 만들기 프로젝트', completed: false, youtubeId: 'k7kJBDe4B1o' },
             ],
             path: '/'
         },
@@ -46,12 +46,12 @@ function LearningCoursesPage() {
             image: pattern7,
             progress: 85,
             curriculum: [
-                { title: '게이지 측정하기', completed: true },
-                { title: '기초 패턴 작성법', completed: true },
-                { title: '패턴 기호 이해하기', completed: true },
-                { title: '내 디자인 만들기', completed: false },
-                { title: '패턴 공유하기', completed: false },
-                { title: '피드백 반영하기', completed: false },
+                { id: 1, title: '게이지 측정하기', completed: true, youtubeId: 'aqz-KE-bpKQ' },
+                { id: 2, title: '기초 패턴 작성법', completed: true, youtubeId: '4R7D3NKZ2F0' },
+                { id: 3, title: '패턴 기호 이해하기', completed: true, youtubeId: 'gNiVIIBXcdk' },
+                { id: 4, title: '내 디자인 만들기', completed: false, youtubeId: 'WCJuwjvI3D0' },
+                { id: 5, title: '패턴 공유하기', completed: false, youtubeId: 'gSvqqaC5Jqg' },
+                { id: 6, title: '피드백 반영하기', completed: false, youtubeId: 'nOvAbBB3mAE' },
             ],
             path: '/'
         }
@@ -68,6 +68,7 @@ function LearningCoursesPage() {
                 {courses.map((course) => (
                     <WideCourseCard
                         key={course.id}
+                        courseId={course.id}
                         title={course.title}
                         author={course.author}
                         tool={course.tool}
