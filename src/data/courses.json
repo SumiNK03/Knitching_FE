@@ -1,0 +1,318 @@
+[
+  {
+    "id": 1,
+    "patternId": 1,
+    "title": "밴쿠버 가디건",
+    "author": "바늘이야기",
+    "tool": "대바늘",
+    "imageId": "pattern1",
+    "progress": 65,
+    "curriculum": [
+      {
+        "id": 1,
+        "title": "기본 도구 알아보기",
+        "completed": true,
+        "youtubeId": "dQw4w9WgXcQ"
+      },
+      {
+        "id": 2,
+        "title": "사슬뜨기 배우기",
+        "completed": true,
+        "youtubeId": "jNQXAC9IVRw"
+      },
+      {
+        "id": 3,
+        "title": "짧은뜨기 기초",
+        "completed": false,
+        "youtubeId": "9bZkp7q19f0"
+      },
+      {
+        "id": 4,
+        "title": "긴뜨기 마스터하기",
+        "completed": false,
+        "youtubeId": "eqKMx3_nWcE"
+      },
+      {
+        "id": 5,
+        "title": "색상 변경 기법",
+        "completed": false,
+        "youtubeId": "jIlQ_XpvQds"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "patternId": 2,
+    "title": "츄러스 가디건",
+    "author": "보송",
+    "tool": "대바늘",
+    "imageId": "pattern2",
+    "progress": 30,
+    "curriculum": [
+      {
+        "id": 1,
+        "title": "패턴 읽기 기초",
+        "completed": true,
+        "youtubeId": "2Xc3p0CNTXc"
+      },
+      {
+        "id": 2,
+        "title": "증감뜨기 배우기",
+        "completed": false,
+        "youtubeId": "aJOTlE1K90k"
+      },
+      {
+        "id": 3,
+        "title": "소매 만들기",
+        "completed": false,
+        "youtubeId": "k7kJBDe4B1o"
+      },
+      {
+        "id": 4,
+        "title": "마무리 기법",
+        "completed": false,
+        "youtubeId": "MgPT0Kz8A88"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "patternId": 3,
+    "title": "오필리아 블라우스",
+    "author": "외국 작가",
+    "tool": "대바늘",
+    "imageId": "pattern3",
+    "progress": 50,
+    "curriculum": [
+      {
+        "id": 1,
+        "title": "블라우스 기초",
+        "completed": true,
+        "youtubeId": "aqz-KE-bpKQ"
+      },
+      {
+        "id": 2,
+        "title": "바디 만들기",
+        "completed": true,
+        "youtubeId": "4R7D3NKZ2F0"
+      },
+      {
+        "id": 3,
+        "title": "목판 디자인",
+        "completed": false,
+        "youtubeId": "gNiVIIBXcdk"
+      },
+      {
+        "id": 4,
+        "title": "소매 완성하기",
+        "completed": false,
+        "youtubeId": "WCJuwjvI3D0"
+      },
+      {
+        "id": 5,
+        "title": "최종 마무리",
+        "completed": false,
+        "youtubeId": "gSvqqaC5Jqg"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "patternId": 4,
+    "title": "레인드롭 티",
+    "author": "솜솜뜨개",
+    "tool": "대바늘",
+    "imageId": "pattern4",
+    "progress": 10,
+    "curriculum": [
+      {
+        "id": 1,
+        "title": "프로젝트 시작",
+        "completed": true,
+        "youtubeId": "nOvAbBB3mAE"
+      },
+      {
+        "id": 2,
+        "title": "기본 패턴 이해",
+        "completed": false,
+        "youtubeId": "kLw-rXLrYZw"
+      },
+      {
+        "id": 3,
+        "title": "레인드롭 모티프",
+        "completed": false,
+        "youtubeId": "X6JHkOw-U0E"
+      },
+      {
+        "id": 4,
+        "title": "조립 및 마무리",
+        "completed": false,
+        "youtubeId": "8S7rGyJ8nMo"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "patternId": 5,
+    "title": "시나몬 코위찬",
+    "author": "호호수",
+    "tool": "대바늘",
+    "imageId": "pattern5",
+    "progress": 42,
+    "curriculum": [
+      {
+        "id": 1,
+        "title": "복합 패턴 이해하기",
+        "completed": true,
+        "youtubeId": "MgPT0Kz8A88"
+      },
+      {
+        "id": 2,
+        "title": "에임 작업법 배우기",
+        "completed": false,
+        "youtubeId": "2Xc3p0CNTXc"
+      },
+      {
+        "id": 3,
+        "title": "텍스처 기법 마스터",
+        "completed": false,
+        "youtubeId": "aJOTlE1K90k"
+      },
+      {
+        "id": 4,
+        "title": "옷 만들기 프로젝트",
+        "completed": false,
+        "youtubeId": "k7kJBDe4B1o"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "patternId": 6,
+    "title": "크리스마스 리본 드레스",
+    "author": "보송",
+    "tool": "대바늘",
+    "imageId": "pattern6",
+    "progress": 75,
+    "curriculum": [
+      {
+        "id": 1,
+        "title": "드레스 기초",
+        "completed": true,
+        "youtubeId": "dQw4w9WgXcQ"
+      },
+      {
+        "id": 2,
+        "title": "몸판 만들기",
+        "completed": true,
+        "youtubeId": "jNQXAC9IVRw"
+      },
+      {
+        "id": 3,
+        "title": "스커트 부분",
+        "completed": true,
+        "youtubeId": "9bZkp7q19f0"
+      },
+      {
+        "id": 4,
+        "title": "리본 장식 추가",
+        "completed": false,
+        "youtubeId": "eqKMx3_nWcE"
+      },
+      {
+        "id": 5,
+        "title": "최종 완성",
+        "completed": false,
+        "youtubeId": "jIlQ_XpvQds"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "patternId": 7,
+    "title": "하이소프트 체커보드 숄더백",
+    "author": "바늘이야기",
+    "tool": "코바늘",
+    "imageId": "pattern7",
+    "progress": 85,
+    "curriculum": [
+      {
+        "id": 1,
+        "title": "게이지 측정하기",
+        "completed": true,
+        "youtubeId": "aqz-KE-bpKQ"
+      },
+      {
+        "id": 2,
+        "title": "기초 패턴 작성법",
+        "completed": true,
+        "youtubeId": "4R7D3NKZ2F0"
+      },
+      {
+        "id": 3,
+        "title": "패턴 기호 이해하기",
+        "completed": true,
+        "youtubeId": "gNiVIIBXcdk"
+      },
+      {
+        "id": 4,
+        "title": "내 디자인 만들기",
+        "completed": false,
+        "youtubeId": "WCJuwjvI3D0"
+      },
+      {
+        "id": 5,
+        "title": "패턴 공유하기",
+        "completed": false,
+        "youtubeId": "gSvqqaC5Jqg"
+      },
+      {
+        "id": 6,
+        "title": "피드백 반영하기",
+        "completed": false,
+        "youtubeId": "nOvAbBB3mAE"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "patternId": 8,
+    "title": "모티브 셔츠 가디건",
+    "author": "뜨개사계절",
+    "tool": "코바늘",
+    "imageId": "pattern8",
+    "progress": 20,
+    "curriculum": [
+      {
+        "id": 1,
+        "title": "모티브 기초",
+        "completed": true,
+        "youtubeId": "kLw-rXLrYZw"
+      },
+      {
+        "id": 2,
+        "title": "모티브 만들기",
+        "completed": false,
+        "youtubeId": "X6JHkOw-U0E"
+      },
+      {
+        "id": 3,
+        "title": "모티브 연결하기",
+        "completed": false,
+        "youtubeId": "8S7rGyJ8nMo"
+      },
+      {
+        "id": 4,
+        "title": "셔츠 조립하기",
+        "completed": false,
+        "youtubeId": "yPwH4WmKx_4"
+      },
+      {
+        "id": 5,
+        "title": "가디건 버튼 달기",
+        "completed": false,
+        "youtubeId": "EwTZf7s82qk"
+      }
+    ]
+  }
+]

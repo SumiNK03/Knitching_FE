@@ -5,7 +5,7 @@ import alarmIcon from '../images/알림.svg';
 import profileImg from '../images/프로필사진.png';
 
 function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // 로그인 상태 (임시로 true로 설정)
   const [searchQuery, setSearchQuery] = useState('');
   const location = useLocation();
   const navigate = useNavigate();
@@ -22,6 +22,9 @@ function Header() {
     if (pathname.startsWith('/pattern/')) {
       return '패턴 상세';
     }
+    if (pathname === '/patterns') {
+      return '도안 목록';
+    }
 
     const titleMap = {
       '/': '둘러보기',
@@ -29,8 +32,6 @@ function Header() {
       '/learning-course': '학습 중인 과정',
       '/payment': '결제',
       '/my-account': '내 계정',
-      '/knitting-patterns': '도안 - 대바늘',
-      '/crochet-patterns': '도안 - 코바늘',
       '/settings': '내 숙련도 설정',
       '/login': '로그인',
       '/signup': '회원가입',
@@ -41,7 +42,7 @@ function Header() {
 
   const handleSearchKeyDown = (e) => {
     if (e.key === 'Enter' && searchQuery.trim()) {
-      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      navigate(`/patterns?q=${encodeURIComponent(searchQuery)}`);
     }
   };
 

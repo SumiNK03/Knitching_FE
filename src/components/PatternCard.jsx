@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-function PatternCard({ imaage, title, author, tool, patternId, difficulty = 3, price }) {
+function PatternCard({ image, title, author, tool, patternId, difficulty = 3, price }) {
     const navigate = useNavigate();
 
     // 가격이 없으면 8000-12000 범위에서 1000의 배수로 생성
@@ -18,7 +18,7 @@ function PatternCard({ imaage, title, author, tool, patternId, difficulty = 3, p
             state: {
                 pattern: {
                     id: patternId,
-                    image: imaage,
+                    image: image,
                     title,
                     author,
                     tool,
@@ -43,7 +43,7 @@ function PatternCard({ imaage, title, author, tool, patternId, difficulty = 3, p
         >
             {/* 이미지 */}
             <div>
-                <img src={imaage} alt={title} className="w-full object-cover rounded-[15px]" style={{ aspectRatio: '300 / 424.29' }} />
+                <img src={image} alt={title} className="w-full object-cover rounded-[15px]" style={{ aspectRatio: '300 / 424.29' }} />
             </div>
             
             {/* 텍스트 정보 */}

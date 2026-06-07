@@ -1,89 +1,45 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import PatternCard from '../components/PatternCard';
 import PatternGrid from '../components/PatternGrid';
-import pattern1 from '../images/도안1.jpg';
-import pattern2 from '../images/도안2.jpg';
-import pattern3 from '../images/도안3.jpg';
-import pattern4 from '../images/도안4.jpg';
-import pattern5 from '../images/도안5.jpg';
-import pattern6 from '../images/도안6.jpg';
-import pattern7 from '../images/도안7.jpg';
-import pattern8 from '../images/도안8.jpg';
+import patternsData from '../data/patterns.json';
+import { patternImages } from '../data/patternImages';
 
-function ExplorePage(props) {
-    // 임시 데이터 (추후 API에서 받아올 예정)
-    const newPatterns = [
-        {
-            id: 1,
-            image: pattern1,
-            title: '밴쿠버 가디건',
-            author: '바늘이야기',
-            tool: '대바늘'
-        },
-        {
-            id: 2,
-            image: pattern2,
-            title: '츄러스 가디건',
-            author: '보송',
-            tool: '대바늘'
-        },
-        {
-            id: 3,
-            image: pattern3,
-            title: '오필리아 블라우스',
-            author: '외국 작가',
-            tool: '대바늘'
-        },
-        {
-            id: 4,
-            image: pattern4,
-            title: '레인드롭 티',
-            author: '솜솜뜨개',
-            tool: '대바늘'
-        }
-    ];
+function ExplorePage() {
+    // 이미지 추가하여 allPatterns 생성
+    const allPatterns = useMemo(() => {
+        return patternsData.map(pattern => ({
+            ...pattern,
+            image: patternImages[pattern.imageId],
+            createdAt: new Date(pattern.createdAt)
+        }));
+    }, []);
 
-    const hotPatterns = [
-        {
-            id: 5,
-            image: pattern5,
-            title: '시나몬 코위찬',
-            author: '호호수',
-            tool: '대바늘'
-        },
-        {
-            id: 6,
-            image: pattern6,
-            title: '크리스마스 리본 드레스',
-            author: '보송',
-            tool: '대바늘'
-        },
-        {
-            id: 7,
-            image: pattern7,
-            title: '하이소프트 체커보드 숄더백',
-            author: '바늘이야기',
-            tool: '코바늘'
-        },
-        {
-            id: 8,
-            image: pattern8,
-            title: '모티브 셔츠 가디건',
-            author: '뜨개사계절',
-            tool: '코바늘'
-        }
-    ];
+    // 새로 등록된 도안 (최신순, 4개)
+    const newPatterns = useMemo(() => {
+        return allPatterns
+            .slice()
+            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+            .slice(0, 4);
+    }, [allPatterns]);
+
+    // HOT 도안 (인기순, 4개)
+    const hotPatterns = useMemo(() => {
+        return allPatterns
+            .slice()
+            .sort((a, b) => b.enrolls - a.enrolls)
+            .slice(0, 4);
+    }, [allPatterns]);
 
     return (
-        <div style={{ padding: '40px', backgroundColor: '#F9F6F0', minHeight: '100vh' }}>
+        <div className="p-10 bg-[#F9F6F0] min-h-screen">
             {/* 새로 등록된 도안 섹션 */}
-            <div style={{ marginBottom: '60px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-                    <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#4A3E3D' }}>
+            <div className="mb-16">
+                <div className="flex justify-between items-center mb-8">
+                    <h2 className="text-2xl font-bold text-[#4A3E3D]">
                         새로 등록된 도안
                     </h2>
-                    <Link to="/" style={{ fontSize: '14px', fontWeight: '500', color: '#3A3232', textDecoration: 'none', cursor: 'pointer' }}>
+                    <Link to="/patterns?sort=latest" className="text-sm font-medium text-[#3A3232] no-underline cursor-pointer hover:text-[#D18063] transition-colors">
                         모두 보기
                     </Link>
                 </div>
@@ -91,7 +47,7 @@ function ExplorePage(props) {
                     {newPatterns.map((pattern) => (
                         <PatternCard
                             key={pattern.id}
-                            imaage={pattern.image}
+                            image={pattern.image}
                             title={pattern.title}
                             author={pattern.author}
                             tool={pattern.tool}
@@ -103,11 +59,11 @@ function ExplorePage(props) {
 
             {/* HOT 섹션 */}
             <div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-                    <h2 style={{ fontSize: '24px', fontWeight: '700', color: '#4A3E3D' }}>
+                <div className="flex justify-between items-center mb-8">
+                    <h2 className="text-2xl font-bold text-[#4A3E3D]">
                         HOT
                     </h2>
-                    <Link to="/" style={{ fontSize: '14px', fontWeight: '500', color: '#3A3232', textDecoration: 'none', cursor: 'pointer' }}>
+                    <Link to="/patterns?sort=hot" className="text-sm font-medium text-[#3A3232] no-underline cursor-pointer hover:text-[#D18063] transition-colors">
                         모두 보기
                     </Link>
                 </div>
@@ -115,7 +71,7 @@ function ExplorePage(props) {
                     {hotPatterns.slice(0, 4).map((pattern) => (
                         <PatternCard
                             key={pattern.id}
-                            imaage={pattern.image}
+                            image={pattern.image}
                             title={pattern.title}
                             author={pattern.author}
                             tool={pattern.tool}

@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "imageId": "pattern1",
+    "title": "밴쿠버 가디건",
+    "author": "바늘이야기",
+    "tool": "대바늘",
+    "views": 1205,
+    "enrolls": 342,
+    "rating": 4.8,
+    "createdAt": "2024-01-15",
+    "isHot": true
+  },
+  {
+    "id": 2,
+    "imageId": "pattern2",
+    "title": "츄러스 가디건",
+    "author": "보송",
+    "tool": "대바늘",
+    "views": 2301,
+    "enrolls": 456,
+    "rating": 4.9,
+    "createdAt": "2024-02-10",
+    "isHot": false
+  },
+  {
+    "id": 3,
+    "imageId": "pattern3",
+    "title": "오필리아 블라우스",
+    "author": "외국 작가",
+    "tool": "대바늘",
+    "views": 1890,
+    "enrolls": 234,
+    "rating": 4.7,
+    "createdAt": "2024-03-05",
+    "isHot": false
+  },
+  {
+    "id": 4,
+    "imageId": "pattern4",
+    "title": "레인드롭 티",
+    "author": "솜솜뜨개",
+    "tool": "대바늘",
+    "views": 3205,
+    "enrolls": 567,
+    "rating": 4.9,
+    "createdAt": "2024-03-20",
+    "isHot": true
+  },
+  {
+    "id": 5,
+    "imageId": "pattern5",
+    "title": "시나몬 코위찬",
+    "author": "호호수",
+    "tool": "대바늘",
+    "views": 2567,
+    "enrolls": 345,
+    "rating": 4.8,
+    "createdAt": "2024-02-28",
+    "isHot": false
+  },
+  {
+    "id": 6,
+    "imageId": "pattern6",
+    "title": "크리스마스 리본 드레스",
+    "author": "보송",
+    "tool": "대바늘",
+    "views": 4123,
+    "enrolls": 678,
+    "rating": 5.0,
+    "createdAt": "2024-01-20",
+    "isHot": true
+  },
+  {
+    "id": 7,
+    "imageId": "pattern7",
+    "title": "하이소프트 체커보드 숄더백",
+    "author": "바늘이야기",
+    "tool": "코바늘",
+    "views": 1834,
+    "enrolls": 289,
+    "rating": 4.6,
+    "createdAt": "2024-03-10",
+    "isHot": false
+  },
+  {
+    "id": 8,
+    "imageId": "pattern8",
+    "title": "모티브 셔츠 가디건",
+    "author": "뜨개사계절",
+    "tool": "코바늘",
+    "views": 3456,
+    "enrolls": 521,
+    "rating": 4.9,
+    "createdAt": "2024-02-15",
+    "isHot": true
+  }
+]
