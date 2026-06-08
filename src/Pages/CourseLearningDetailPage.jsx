@@ -1,13 +1,82 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { apiWithAuth } from '../utils/api';
 
 function CourseLearningDetailPage() {
     const navigate = useNavigate();
     const location = useLocation();
     const { courseId } = useParams();
 
-    // 전달받은 코스 데이터
-    const courseData = location.state?.course;
+    const [courseData, setCourseData] = useState(location.state?.course || null);
+    const [loading, setLoading] = useState(!location.state?.course);
+
+    useEffect(() => {
+        if (location.state?.course) {
+            setCourseData({
+                courseId: location.state.course.courseId ?? Number(courseId),
+                ...location.state.course,
+            });
+            setLoading(false);
+        }
+
+        const fetchCourse = async () => {
+            if (!location.state?.course) {
+                setLoading(true);
+            }
+            try {
+                const response = await apiWithAuth('/api/enrollments');
+                console.log('[DEBUG][GET /api/enrollments][CourseLearningDetailPage] raw response:', response);
+                const items = Array.isArray(response)
+                    ? response
+                    : Array.isArray(response?.content)
+                        ? response.content
+                        : Array.isArray(response?.data)
+                            ? response.data
+                            : [];
+
+                const target = items.find((item) => String(item.curriculum_id) === String(courseId));
+                if (!target) {
+                    setCourseData(null);
+                    return;
+                }
+
+                const curriculum = (target.items || []).map((curriculumItem) => ({
+                    id: curriculumItem.user_progress_id,
+                    seq: curriculumItem.seq,
+                    videoKey: curriculumItem.video_key ?? curriculumItem.video_id,
+                    title: curriculumItem.title,
+                    completed: Boolean(curriculumItem.is_completed),
+                }));
+
+                const totalItems = Number(target.total_items ?? curriculum.length ?? 0);
+                const completedItems = Number(target.completed_items ?? curriculum.filter((c) => c.completed).length ?? 0);
+
+                setCourseData({
+                    courseId: target.curriculum_id,
+                    title: target.pattern_name,
+                    author: target.author_name,
+                    tool: target.tool,
+                    image: target.thumbnail_url,
+                    progress: totalItems > 0 ? Math.round((completedItems / totalItems) * 100) : 0,
+                    curriculum,
+                });
+            } catch (e) {
+                setCourseData(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchCourse();
+    }, [courseId, location.state]);
+
+    if (loading) {
+        return (
+            <div className="p-10">
+                <p className="text-center text-gray-500">과정 정보를 불러오는 중입니다...</p>
+            </div>
+        );
+    }
 
     if (!courseData) {
         return (
@@ -25,16 +94,16 @@ function CourseLearningDetailPage() {
 
     const { title, author, tool, image, progress, curriculum } = courseData;
 
-    // 커리큘럼 수강 상태별 분류
+    // 커리큘럼 수강 상태별 분류 (완료/미수강)
     const completedCount = curriculum.filter(item => item.completed).length;
-    const inProgressCount = curriculum.filter(item => !item.completed && curriculum.indexOf(item) < completedCount + 1).length;
-    const notStartedCount = curriculum.length - completedCount - inProgressCount;
+    const notStartedCount = curriculum.length - completedCount;
 
     const handleCurriculumClick = (curriculumItem) => {
         navigate(`/curriculum/${curriculumItem.id}`, {
             state: {
                 curriculum: curriculumItem,
-                course: courseData
+                course: courseData,
+                courseId,
             }
         });
     };
@@ -129,26 +198,6 @@ function CourseLearningDetailPage() {
                                         />
                                     )}
 
-                                    {/* 수강중 (황색) */}
-                                    {inProgressCount > 0 && (
-                                        <circle
-                                            cx="100"
-                                            cy="100"
-                                            r="90"
-                                            fill="none"
-                                            stroke="#E5A93C"
-                                            strokeWidth="12"
-                                            strokeDasharray={`${(inProgressCount / curriculum.length) * 565.5} 565.5`}
-                                            strokeDashoffset={-((completedCount / curriculum.length) * 565.5)}
-                                            strokeLinecap="round"
-                                            style={{
-                                                transform: 'rotate(-90deg)',
-                                                transformOrigin: '100px 100px',
-                                                transition: 'stroke-dasharray 0.3s ease'
-                                            }}
-                                        />
-                                    )}
-
                                     {/* 미수강 (빨강) */}
                                     {notStartedCount > 0 && (
                                         <circle
@@ -159,7 +208,7 @@ function CourseLearningDetailPage() {
                                             stroke="#D65A47"
                                             strokeWidth="12"
                                             strokeDasharray={`${(notStartedCount / curriculum.length) * 565.5} 565.5`}
-                                            strokeDashoffset={-((completedCount + inProgressCount) / curriculum.length) * 565.5}
+                                            strokeDashoffset={-((completedCount / curriculum.length) * 565.5)}
                                             strokeLinecap="round"
                                             style={{
                                                 transform: 'rotate(-90deg)',
@@ -183,10 +232,6 @@ function CourseLearningDetailPage() {
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 rounded-full bg-[#2B7A8A]"></div>
                                     <span className="text-sm font-bold text-[#7A7265]">완료</span>
-                                </div>
-                                <div className="flex items-center gap-2">
-                                    <div className="w-3 h-3 rounded-full bg-[#E5A93C]"></div>
-                                    <span className="text-sm font-bold text-[#7A7265]">수강중</span>
                                 </div>
                                 <div className="flex items-center gap-2">
                                     <div className="w-3 h-3 rounded-full bg-[#D65A47]"></div>
@@ -218,7 +263,7 @@ function CourseLearningDetailPage() {
                                     className="flex gap-8 text-xs cursor-pointer hover:bg-[#F8F8F8] p-2 rounded transition-colors"
                                 >
                                     <span className="w-6 font-normal text-[#232323]">
-                                        {String(index + 1).padStart(2, '0')}
+                                        {String(item.seq ?? index + 1).padStart(2, '0')}
                                     </span>
                                     <span className="flex-1 font-normal text-[#232323] leading-tight hover:text-[#D18063]">
                                         {item.title}

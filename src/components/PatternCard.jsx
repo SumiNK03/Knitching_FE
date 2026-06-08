@@ -6,7 +6,7 @@ function PatternCard({ image, title, author, tool, patternId, difficulty = 3, pr
 
     // 가격이 없으면 8000-12000 범위에서 1000의 배수로 생성
     const getRandomPrice = () => {
-        if (price) return price;
+        if (price !== undefined && price !== null) return price;
         const prices = [8000, 9000, 10000, 11000, 12000];
         return prices[Math.floor(Math.random() * prices.length)];
     };
@@ -14,24 +14,7 @@ function PatternCard({ image, title, author, tool, patternId, difficulty = 3, pr
     const patternPrice = getRandomPrice();
 
     const handleClick = () => {
-        navigate(`/pattern/${patternId}`, {
-            state: {
-                pattern: {
-                    id: patternId,
-                    image: image,
-                    title,
-                    author,
-                    tool,
-                    difficulty,
-                    price: patternPrice,
-                    description: `${title}은(는) 매력적인 뜨개 패턴입니다. 세밀한 기법으로 완성도 높은 작품을 만들 수 있습니다.`,
-                    requiredLevel: '초급~중급',
-                    views: Math.floor(Math.random() * 3000),
-                    enrolls: Math.floor(Math.random() * 500),
-                    rating: (Math.random() * 2 + 3).toFixed(1)
-                }
-            }
-        });
+        navigate(`/pattern/${patternId}`);
     };
 
     // 이미지는 현재는 로컬 경로를 넘겨주지만, 추후에는 AWS url로 대체 예정.

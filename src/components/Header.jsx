@@ -1,14 +1,22 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 import searchIcon from '../images/검색.svg';
 import alarmIcon from '../images/알림.svg';
 import profileImg from '../images/프로필사진.png';
 
 function Header() {
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // 로그인 상태 (임시로 true로 설정)
   const [searchQuery, setSearchQuery] = useState('');
+  const [showProfileMenu, setShowProfileMenu] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { isLoggedIn, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    setShowProfileMenu(false);
+    navigate('/login');
+  };
 
   // 경로별 제목 매핑
   const getTitleByPath = (pathname) => {
@@ -77,11 +85,75 @@ function Header() {
               <img src={alarmIcon} alt="알림" style={{ width: '24px', height: '24px' }} />
             </button>
 
-            {/* 프로필 이미지 */}
-            <div
-              className="avatar"
-              style={{ backgroundImage: `url(${profileImg})`, cursor: 'pointer' }}
-            ></div>
+            {/* 프로필 이미지 및 드롭다운 */}
+            <div style={{ position: 'relative' }}>
+              <div
+                className="avatar"
+                style={{ backgroundImage: `url(${profileImg})`, cursor: 'pointer' }}
+                onClick={() => setShowProfileMenu(!showProfileMenu)}
+              ></div>
+              
+              {showProfileMenu && (
+                <div style={{
+                  position: 'absolute',
+                  right: 0,
+                  top: '100%',
+                  marginTop: '8px',
+                  backgroundColor: 'white',
+                  border: '1px solid #E0D9CF',
+                  borderRadius: '8px',
+                  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+                  minWidth: '150px',
+                  zIndex: 100
+                }}>
+                  <Link
+                    to="/my-account"
+                    style={{
+                      display: 'block',
+                      padding: '10px 16px',
+                      textDecoration: 'none',
+                      color: '#4A3E3D',
+                      fontSize: '14px',
+                      borderBottom: '1px solid #E0D9CF'
+                    }}
+                    onClick={() => setShowProfileMenu(false)}
+                  >
+                    내 계정
+                  </Link>
+                  <Link
+                    to="/settings"
+                    style={{
+                      display: 'block',
+                      padding: '10px 16px',
+                      textDecoration: 'none',
+                      color: '#4A3E3D',
+                      fontSize: '14px',
+                      borderBottom: '1px solid #E0D9CF'
+                    }}
+                    onClick={() => setShowProfileMenu(false)}
+                  >
+                    설정
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    style={{
+                      display: 'block',
+                      width: '100%',
+                      padding: '10px 16px',
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      textAlign: 'left',
+                      color: '#D18063',
+                      fontSize: '14px',
+                      cursor: 'pointer',
+                      fontWeight: '500'
+                    }}
+                  >
+                    로그아웃
+                  </button>
+                </div>
+              )}
+            </div>
           </>
         ) : (
           /* 로그인 버튼 */

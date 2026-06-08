@@ -1,17 +1,60 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { apiWithoutAuth } from '../utils/api';
 import googleLogo from '../images/구글 로고.svg';
 import loginBackground from '../images/로그인 배경.png';
 
 function Login(props) {
-    const [email, setEmail] = useState('');
+    const [loginId, setLoginId] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
     const navigate = useNavigate();
+    const { login } = useAuth();
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // 로그인 로직
-        console.log('로그인:', email, password);
+        setError('');
+
+        if (!loginId) {
+            setError('아이디를 입력해주세요.');
+            return;
+        }
+        if (!password) {
+            setError('비밀번호를 입력해주세요.');
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            const response = await apiWithoutAuth('/api/users/login', {
+                method: 'POST',
+                body: JSON.stringify({
+                    loginId,
+                    password
+                })
+            });
+
+            console.log('로그인 성공:', response);
+            
+            // 토큰 저장 및 전역 상태 업데이트
+            login(response.token, {
+                userId: response.userId,
+                loginId: response.loginId,
+                name: response.name,
+                role: response.role
+            });
+
+            alert('로그인이 완료되었습니다!');
+            navigate('/');
+        } catch (err) {
+            console.error('로그인 실패:', err);
+            setError(err.message || '로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleGoogleLogin = () => {
@@ -39,17 +82,23 @@ function Login(props) {
                 <div className="w-full max-w-md">
                     <h1 className="text-3xl font-bold text-[#4A3E3D] mb-10">로그인</h1>
 
+                    {error && (
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4 text-sm">
+                            {error}
+                        </div>
+                    )}
+
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        {/* 이메일 입력 */}
+                        {/* 아이디 입력 */}
                         <div>
                             <label className="text-sm font-semibold text-[#4A3E3D] block mb-2">
-                                이메일 주소
+                                아이디
                             </label>
                             <input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                placeholder="이메일을 입력해주세요"
+                                type="text"
+                                value={loginId}
+                                onChange={(e) => setLoginId(e.target.value)}
+                                placeholder="아이디를 입력해주세요"
                                 className="w-full px-4 py-3 border border-[#E0D9CF] rounded-lg text-sm bg-white text-[#4A3E3D] placeholder-[#B1B1B1] focus:outline-none focus:border-[#D18063]"
                                 required
                             />
@@ -73,9 +122,10 @@ function Login(props) {
                         {/* 회원가입 버튼 */}
                         <button
                             type="submit"
-                            className="w-full bg-[#D18063] text-white border-none px-6 py-3 rounded-lg text-sm font-medium cursor-pointer hover:bg-[#C07053] transition-colors"
+                            disabled={isLoading}
+                            className="w-full bg-[#D18063] text-white border-none px-6 py-3 rounded-lg text-sm font-medium cursor-pointer hover:bg-[#C07053] transition-colors disabled:bg-[#B1B1B1] disabled:cursor-not-allowed"
                         >
-                            회원가입
+                            {isLoading ? '로그인 중...' : '로그인'}
                         </button>
                     </form>
 
@@ -102,7 +152,7 @@ function Login(props) {
                             onClick={() => navigate('/signup')}
                             className="text-[#D18063] font-semibold cursor-pointer hover:underline border-none bg-none"
                         >
-                            로그인
+                            회원가입
                         </button>
                     </p>
                 </div>

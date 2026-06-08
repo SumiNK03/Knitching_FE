@@ -27,7 +27,7 @@ function SideBar() {
     if (path === '/explore' && (location.pathname === '/' || location.pathname === '/explore')) {
       return true;
     }
-    if (path === '/patterns' && location.pathname.startsWith('/patterns')) {
+    if (path === '/patterns' && (location.pathname.startsWith('/patterns') || location.pathname.startsWith('/pattern/'))) {
       return true;
     }
     return location.pathname === path;

@@ -27,10 +27,9 @@ function WideCourseCard({
         // 커리큘럼 항목은 더 이상 클릭하지 않음 (상세 페이지에서만 가능)
     };
 
-    // 커리큘럼 수강 상태별 분류
+    // 커리큘럼 수강 상태별 분류 (완료/미수강)
     const completedCount = curriculum.filter(item => item.completed).length;
-    const inProgressCount = curriculum.filter(item => !item.completed && curriculum.indexOf(item) < completedCount + 1).length;
-    const notStartedCount = curriculum.length - completedCount - inProgressCount;
+    const notStartedCount = curriculum.length - completedCount;
 
     return (
         <div 
@@ -89,7 +88,7 @@ function WideCourseCard({
                                 className="flex gap-8 text-xs p-1 rounded"
                             >
                                 <span className="w-6 font-normal text-[#232323]">
-                                    {String(index + 1).padStart(2, '0')}
+                                    {String(item.seq ?? index + 1).padStart(2, '0')}
                                 </span>
                                 <span className="flex-1 font-normal text-[#232323] leading-tight">
                                     {item.title}
@@ -147,26 +146,6 @@ function WideCourseCard({
                                 />
                             )}
 
-                            {/* 수강중 (황색) */}
-                            {inProgressCount > 0 && (
-                                <circle
-                                    cx="100"
-                                    cy="100"
-                                    r="90"
-                                    fill="none"
-                                    stroke="#E5A93C"
-                                    strokeWidth="12"
-                                    strokeDasharray={`${(inProgressCount / curriculum.length) * 565.5} 565.5`}
-                                    strokeDashoffset={-((completedCount / curriculum.length) * 565.5)}
-                                    strokeLinecap="round"
-                                    style={{ 
-                                        transform: 'rotate(-90deg)',
-                                        transformOrigin: '100px 100px',
-                                        transition: 'stroke-dasharray 0.3s ease'
-                                    }}
-                                />
-                            )}
-
                             {/* 미수강 (빨강) */}
                             {notStartedCount > 0 && (
                                 <circle
@@ -177,7 +156,7 @@ function WideCourseCard({
                                     stroke="#D65A47"
                                     strokeWidth="12"
                                     strokeDasharray={`${(notStartedCount / curriculum.length) * 565.5} 565.5`}
-                                    strokeDashoffset={-((completedCount + inProgressCount) / curriculum.length) * 565.5}
+                                    strokeDashoffset={-((completedCount / curriculum.length) * 565.5)}
                                     strokeLinecap="round"
                                     style={{ 
                                         transform: 'rotate(-90deg)',
@@ -201,10 +180,6 @@ function WideCourseCard({
                         <div className="flex items-center gap-1.5">
                             <div className="w-2 h-2 rounded-full bg-[#2B7A8A]"></div>
                             <span className="text-[#7A7265]">완료</span>
-                        </div>
-                        <div className="flex items-center gap-1.5">
-                            <div className="w-2 h-2 rounded-full bg-[#E5A93C]"></div>
-                            <span className="text-[#7A7265]">수강중</span>
                         </div>
                         <div className="flex items-center gap-1.5">
                             <div className="w-2 h-2 rounded-full bg-[#D65A47]"></div>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { apiWithoutAuth } from '../utils/api';
 import googleLogo from '../images/구글 로고.svg';
 import signupBackground from '../images/로그인 배경.png';
 
 function SignUp(props) {
     const [formData, setFormData] = useState({
+        loginId: '',
         name: '',
         nickname: '',
         gender: '선택 안함',
@@ -12,7 +14,19 @@ function SignUp(props) {
         password: '',
         passwordConfirm: ''
     });
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
     const navigate = useNavigate();
+
+    // Gender 값 매핑 함수
+    const genderToEnum = (gender) => {
+        const genderMap = {
+            '남자': 'male',
+            '여자': 'female',
+            '선택 안함': 'other'
+        };
+        return genderMap[gender] || 'other';
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -22,10 +36,61 @@ function SignUp(props) {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // 회원가입 로직
-        console.log('회원가입:', formData);
+        setError('');
+
+        // 유효성 검사
+        if (!formData.loginId) {
+            setError('아이디를 입력해주세요.');
+            return;
+        }
+        if (!formData.name) {
+            setError('이름을 입력해주세요.');
+            return;
+        }
+        if (!formData.nickname) {
+            setError('닉네임을 입력해주세요.');
+            return;
+        }
+        if (!formData.email) {
+            setError('이메일을 입력해주세요.');
+            return;
+        }
+        if (!formData.password) {
+            setError('비밀번호를 입력해주세요.');
+            return;
+        }
+        if (formData.password !== formData.passwordConfirm) {
+            setError('비밀번호가 일치하지 않습니다.');
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            const response = await apiWithoutAuth('/api/users/signup', {
+                method: 'POST',
+                body: JSON.stringify({
+                    loginId: formData.loginId,
+                    password: formData.password,
+                    passwordConfirm: formData.passwordConfirm,
+                    name: formData.name,
+                    email: formData.email,
+                    nickname: formData.nickname,
+                    gender: genderToEnum(formData.gender)
+                })
+            });
+
+            console.log('회원가입 성공:', response);
+            alert('회원가입이 완료되었습니다!');
+            navigate('/login');
+        } catch (err) {
+            console.error('회원가입 실패:', err);
+            setError(err.message || '회원가입에 실패했습니다. 다시 시도해주세요.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     const handleGoogleSignUp = () => {
@@ -53,7 +118,29 @@ function SignUp(props) {
                 <div className="w-full max-w-md">
                     <h1 className="text-3xl font-bold text-[#4A3E3D] mb-10">회원가입</h1>
 
+                    {error && (
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg mb-4 text-sm">
+                            {error}
+                        </div>
+                    )}
+
                     <form onSubmit={handleSubmit} className="space-y-4">
+                        {/* 아이디 입력 */}
+                        <div>
+                            <label className="text-sm font-semibold text-[#4A3E3D] block mb-2">
+                                아이디
+                            </label>
+                            <input
+                                type="text"
+                                name="loginId"
+                                value={formData.loginId}
+                                onChange={handleChange}
+                                placeholder="아이디를 입력해주세요"
+                                className="w-full px-4 py-3 border border-[#E0D9CF] rounded-lg text-sm bg-white text-[#4A3E3D] placeholder-[#B1B1B1] focus:outline-none focus:border-[#D18063]"
+                                required
+                            />
+                        </div>
+
                         {/* 이름 입력 */}
                         <div>
                             <label className="text-sm font-semibold text-[#4A3E3D] block mb-2">
@@ -154,9 +241,10 @@ function SignUp(props) {
                         {/* 회원가입 버튼 */}
                         <button
                             type="submit"
-                            className="w-full bg-[#D18063] text-white border-none px-6 py-3 rounded-lg text-sm font-medium cursor-pointer hover:bg-[#C07053] transition-colors mt-6"
+                            disabled={isLoading}
+                            className="w-full bg-[#D18063] text-white border-none px-6 py-3 rounded-lg text-sm font-medium cursor-pointer hover:bg-[#C07053] transition-colors mt-6 disabled:bg-[#B1B1B1] disabled:cursor-not-allowed"
                         >
-                            회원가입
+                            {isLoading ? '회원가입 중...' : '회원가입'}
                         </button>
                     </form>
 

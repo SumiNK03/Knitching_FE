@@ -1,77 +1,137 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import { apiWithAuth } from '../utils/api';
 import profileImg from '../images/프로필사진.png';
 import arrowDownImage from '../images/arrow-down.svg';
 import checkboxChecked from '../images/checkbox-checked.svg';
 import checkboxUnchecked from '../images/checkbox-unchecked.svg';
 
 function SettingsPage(props) {
+    const { user, isLoggedIn } = useAuth();
     const [expandedSection, setExpandedSection] = useState(null);
     const [isEditing, setIsEditing] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
+    const [error, setError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const [apiSkillsData, setApiSkillsData] = useState([]);
     const [skillsState, setSkillsState] = useState({
-        crochet: [
-            {
-                level: '기초',
-                skills: [
-                    { id: 1, name: '기술 1', mastered: true },
-                    { id: 2, name: '기술 1', mastered: true },
-                    { id: 3, name: '기술 1', mastered: false },
-                    { id: 4, name: '기술 1', mastered: true }
-                ]
-            },
-            {
-                level: '중급',
-                skills: [
-                    { id: 5, name: '기술 1', mastered: true },
-                    { id: 6, name: '기술 1', mastered: true },
-                    { id: 7, name: '기술 1', mastered: false },
-                    { id: 8, name: '기술 1', mastered: true }
-                ]
-            },
-            {
-                level: '고급',
-                skills: [
-                    { id: 9, name: '기술 1', mastered: true },
-                    { id: 10, name: '기술 1', mastered: true },
-                    { id: 11, name: '기술 1', mastered: true },
-                    { id: 12, name: '기술 1', mastered: false }
-                ]
-            }
-        ],
-        knitting: [
-            {
-                level: '기초',
-                skills: [
-                    { id: 13, name: '기술 1', mastered: true },
-                    { id: 14, name: '기술 1', mastered: true },
-                    { id: 15, name: '기술 1', mastered: true },
-                    { id: 16, name: '기술 1', mastered: false }
-                ]
-            },
-            {
-                level: '중급',
-                skills: [
-                    { id: 17, name: '기술 1', mastered: true },
-                    { id: 18, name: '기술 1', mastered: false },
-                    { id: 19, name: '기술 1', mastered: false },
-                    { id: 20, name: '기술 1', mastered: true }
-                ]
-            },
-            {
-                level: '고급',
-                skills: [
-                    { id: 21, name: '기술 1', mastered: true },
-                    { id: 22, name: '기술 1', mastered: true },
-                    { id: 23, name: '기술 1', mastered: false },
-                    { id: 24, name: '기술 1', mastered: true }
-                ]
-            }
-        ]
+        crochet: [],
+        knitting: []
     });
+
+    // API에서 데이터 가져오기
+    const fetchUserSkills = async () => {
+        try {
+            setIsLoading(true);
+            setError('');
+            const response = await apiWithAuth('/api/user-skills', {
+                method: 'GET'
+            });
+            console.log('[SettingsPage] API 응답:', response);
+            setApiSkillsData(response);
+            transformApiDataToState(response);
+        } catch (err) {
+            setError('기술 정보를 불러오는 중 오류가 발생했습니다.');
+            console.error('Fetch skills error:', err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // API 데이터를 컴포넌트 state 형식으로 변환
+    const transformApiDataToState = (apiData) => {
+        console.log('[SettingsPage] transformApiDataToState 시작:', apiData);
+        const newState = { crochet: [], knitting: [] };
+
+        apiData.forEach(toolGroup => {
+            console.log('[SettingsPage] toolGroup:', toolGroup);
+            const toolKey = toolGroup.tool === 'KNT' ? 'knitting' : 'crochet';
+
+            toolGroup.levelGroups.forEach(levelGroup => {
+                console.log('[SettingsPage] levelGroup:', levelGroup);
+                const skillsArray = levelGroup.skills.map((skill, idx) => {
+                    console.log('[SettingsPage] skill:', skill);
+                    return {
+                        id: `${skill.techCode}`,
+                        name: skill.title || skill.techCode,  // title이 없으면 techCode 사용
+                        mastered: skill.level === 1,
+                        techCode: skill.techCode
+                    };
+                });
+
+                newState[toolKey].push({
+                    level: levelGroup.levelName,
+                    skills: skillsArray
+                });
+            });
+        });
+
+        console.log('[SettingsPage] 변환된 state:', newState);
+        setSkillsState(newState);
+    };
+
+    // 컴포넌트 마운트 시 데이터 조회
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetchUserSkills();
+        }
+    }, [isLoggedIn]);
+
+    // 저장 함수
+    const handleSave = async () => {
+        try {
+            setIsSaving(true);
+            setError('');
+            setSuccessMessage('');
+
+            // skillsState를 API 형식으로 변환
+            const skillsToUpdate = [];
+            
+            // crochet 기술들
+            skillsState.crochet.forEach(level => {
+                level.skills.forEach(skill => {
+                    skillsToUpdate.push({
+                        techCode: skill.techCode,
+                        level: skill.mastered ? 1 : 0
+                    });
+                });
+            });
+
+            // knitting 기술들
+            skillsState.knitting.forEach(level => {
+                level.skills.forEach(skill => {
+                    skillsToUpdate.push({
+                        techCode: skill.techCode,
+                        level: skill.mastered ? 1 : 0
+                    });
+                });
+            });
+
+            const response = await apiWithAuth('/api/user-skills', {
+                method: 'PUT',
+                body: JSON.stringify({
+                    skills: skillsToUpdate
+                })
+            });
+
+            setApiSkillsData(response);
+            transformApiDataToState(response);
+            setIsEditing(false);
+            setSuccessMessage('기술 정보가 성공적으로 저장되었습니다.');
+            setTimeout(() => setSuccessMessage(''), 3000);
+        } catch (err) {
+            setError('기술 정보 저장 중 오류가 발생했습니다.');
+            console.error('Save skills error:', err);
+        } finally {
+            setIsSaving(false);
+        }
+    };
     
     const formData = {
-        name: '김00',
-        nickname: '뜨개질',
-        email: 'alexarawles@gmail.com'
+        name: user?.name || '',
+        nickname: user?.nickname || '',
+        email: user?.email || ''
     };
 
     const toggleSection = (level, tool) => {
@@ -161,7 +221,25 @@ function SettingsPage(props) {
 
             {/* 컨텐츠 영역 */}
             <div className="p-10">
-                {/* 프로필 섹션 */}
+                {error && (
+                    <div className="mb-6 p-4 bg-red-100 text-red-700 rounded-lg">
+                        {error}
+                    </div>
+                )}
+
+                {successMessage && (
+                    <div className="mb-6 p-4 bg-green-100 text-green-700 rounded-lg">
+                        {successMessage}
+                    </div>
+                )}
+
+                {isLoading ? (
+                    <div className="text-center py-12 text-gray-500">
+                        로딩 중...
+                    </div>
+                ) : (
+                    <>
+                    {/* 프로필 섹션 */}
                 <div className="p-10 mb-10">
                     <div className="flex justify-between items-start mb-10">
                         <div className="flex items-center gap-5">
@@ -181,10 +259,11 @@ function SettingsPage(props) {
                         </div>
                         {isEditing ? (
                             <button
-                                onClick={() => setIsEditing(false)}
-                                className="bg-[#D18063] text-white border-none px-6 py-2 rounded-lg text-sm font-medium cursor-pointer hover:bg-[#C07053]"
+                                onClick={handleSave}
+                                disabled={isSaving}
+                                className="bg-[#D18063] text-white border-none px-6 py-2 rounded-lg text-sm font-medium cursor-pointer hover:bg-[#C07053] disabled:bg-gray-400"
                             >
-                                저장
+                                {isSaving ? '저장 중...' : '저장'}
                             </button>
                         ) : (
                             <button
@@ -222,6 +301,8 @@ function SettingsPage(props) {
                         </div>
                     </div>
                 </div>
+                    </>
+                )}
             </div>
         </div>
     );

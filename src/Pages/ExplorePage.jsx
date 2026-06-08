@@ -1,35 +1,66 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import PatternCard from '../components/PatternCard';
 import PatternGrid from '../components/PatternGrid';
-import patternsData from '../data/patterns.json';
-import { patternImages } from '../data/patternImages';
+import { apiWithoutAuth } from '../utils/api';
 
 function ExplorePage() {
-    // 이미지 추가하여 allPatterns 생성
-    const allPatterns = useMemo(() => {
-        return patternsData.map(pattern => ({
-            ...pattern,
-            image: patternImages[pattern.imageId],
-            createdAt: new Date(pattern.createdAt)
+    const [newPatterns, setNewPatterns] = useState([]);
+    const [hotPatterns, setHotPatterns] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState('');
+
+    const toPatternCardModel = useMemo(() => {
+        return (items) => items.map((pattern) => ({
+            id: pattern.patternId,
+            image: pattern.thumbnailUrl,
+            title: pattern.patternName,
+            author: pattern.patternAuthorName,
+            tool: pattern.tool,
+            price: pattern.price
         }));
     }, []);
 
-    // 새로 등록된 도안 (최신순, 4개)
-    const newPatterns = useMemo(() => {
-        return allPatterns
-            .slice()
-            .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-            .slice(0, 4);
-    }, [allPatterns]);
+    const normalizeListResponse = (response) => {
+        if (Array.isArray(response)) {
+            return response;
+        }
+        if (Array.isArray(response?.content)) {
+            return response.content;
+        }
+        if (Array.isArray(response?.data)) {
+            return response.data;
+        }
+        return [];
+    };
 
-    // HOT 도안 (인기순, 4개)
-    const hotPatterns = useMemo(() => {
-        return allPatterns
-            .slice()
-            .sort((a, b) => b.enrolls - a.enrolls)
-            .slice(0, 4);
-    }, [allPatterns]);
+    useEffect(() => {
+        const fetchExplorePatterns = async () => {
+            setLoading(true);
+            setError('');
+
+            try {
+                const [latestResponse, popularResponse] = await Promise.all([
+                    apiWithoutAuth('/api/patterns?sort=latest&tool=all&page=0&size=4'),
+                    apiWithoutAuth('/api/patterns?sort=popular&tool=all&page=0&size=4')
+                ]);
+
+                const latestItems = normalizeListResponse(latestResponse);
+                const popularItems = normalizeListResponse(popularResponse);
+
+                setNewPatterns(toPatternCardModel(latestItems));
+                setHotPatterns(toPatternCardModel(popularItems));
+            } catch (err) {
+                setError(err.message || '둘러보기 도안을 불러오지 못했습니다.');
+                setNewPatterns([]);
+                setHotPatterns([]);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchExplorePatterns();
+    }, [toPatternCardModel]);
 
     return (
         <div className="p-10 bg-[#F9F6F0] min-h-screen">
@@ -43,18 +74,25 @@ function ExplorePage() {
                         모두 보기
                     </Link>
                 </div>
-                <PatternGrid columns={4} gap={24}>
-                    {newPatterns.map((pattern) => (
-                        <PatternCard
-                            key={pattern.id}
-                            image={pattern.image}
-                            title={pattern.title}
-                            author={pattern.author}
-                            tool={pattern.tool}
-                            patternId={pattern.id}
-                        />
-                    ))}
-                </PatternGrid>
+                {loading ? (
+                    <p className="text-[#8A806D]">불러오는 중...</p>
+                ) : error ? (
+                    <p className="text-red-500">{error}</p>
+                ) : (
+                    <PatternGrid columns={4} gap={24}>
+                        {newPatterns.map((pattern) => (
+                            <PatternCard
+                                key={pattern.id}
+                                image={pattern.image}
+                                title={pattern.title}
+                                author={pattern.author}
+                                tool={pattern.tool}
+                                patternId={pattern.id}
+                                price={pattern.price}
+                            />
+                        ))}
+                    </PatternGrid>
+                )}
             </div>
 
             {/* HOT 섹션 */}
@@ -63,22 +101,29 @@ function ExplorePage() {
                     <h2 className="text-2xl font-bold text-[#4A3E3D]">
                         HOT
                     </h2>
-                    <Link to="/patterns?sort=hot" className="text-sm font-medium text-[#3A3232] no-underline cursor-pointer hover:text-[#D18063] transition-colors">
+                    <Link to="/patterns?sort=popular" className="text-sm font-medium text-[#3A3232] no-underline cursor-pointer hover:text-[#D18063] transition-colors">
                         모두 보기
                     </Link>
                 </div>
-                <PatternGrid columns={4} gap={24}>
-                    {hotPatterns.slice(0, 4).map((pattern) => (
-                        <PatternCard
-                            key={pattern.id}
-                            image={pattern.image}
-                            title={pattern.title}
-                            author={pattern.author}
-                            tool={pattern.tool}
-                            patternId={pattern.id}
-                        />
-                    ))}
-                </PatternGrid>
+                {loading ? (
+                    <p className="text-[#8A806D]">불러오는 중...</p>
+                ) : error ? (
+                    <p className="text-red-500">{error}</p>
+                ) : (
+                    <PatternGrid columns={4} gap={24}>
+                        {hotPatterns.map((pattern) => (
+                            <PatternCard
+                                key={pattern.id}
+                                image={pattern.image}
+                                title={pattern.title}
+                                author={pattern.author}
+                                tool={pattern.tool}
+                                patternId={pattern.id}
+                                price={pattern.price}
+                            />
+                        ))}
+                    </PatternGrid>
+                )}
             </div>
         </div>
     );
